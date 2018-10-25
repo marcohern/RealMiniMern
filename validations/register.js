@@ -22,7 +22,7 @@ module.exports = function validateRegisterInput(data) {
     errors.email = "Email is required";
   }
 
-  if (Validator.isEmail(data.email)) {
+  if (!Validator.isEmail(data.email)) {
     errors.email = "Email is invalid";
   }
 
@@ -30,7 +30,7 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Password is required";
   }
 
-  if (Validator.isLength(data.password, { min: 3, max: 30 })) {
+  if (!Validator.isLength(data.password, { min: 3, max: 30 })) {
     errors.password = "Password must be between 3 and 30 chars";
   }
 
@@ -38,7 +38,7 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Confirm Password is required";
   }
 
-  if (Validator.equals(data.password, data.confirmpwd)) {
+  if (!Validator.equals(data.password, data.confirmpwd)) {
     errors.password = "Passwords must match";
   }
 
