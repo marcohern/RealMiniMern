@@ -10,12 +10,12 @@ module.exports = function validateRegisterInput(data) {
   data.confirmpwd = !isEmpty(data.confirmpwd) ? data.confirmpwd : "";
   data.desc = !isEmpty(data.desc) ? data.desc : "";
 
-  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
-    errors.name = "Name must be between 2 and 30 chars";
-  }
-
   if (Validator.isEmpty(data.name)) {
     errors.name = "name field is required";
+  }
+
+  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = "Name must be between 2 and 30 chars";
   }
 
   if (Validator.isEmpty(data.email)) {
@@ -39,7 +39,7 @@ module.exports = function validateRegisterInput(data) {
   }
 
   if (!Validator.equals(data.password, data.confirmpwd)) {
-    errors.password = "Passwords must match";
+    errors.confirmpwd = "Passwords must match";
   }
 
   return {
