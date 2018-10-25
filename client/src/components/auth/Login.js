@@ -3,6 +3,7 @@ import axios from "axios";
 import classnames from "classnames";
 import { connect } from "react-redux";
 import { loginAction } from "../../actions/authActions";
+import { PropTypes } from "prop-types";
 
 class Login extends Component {
   constructor() {
@@ -89,6 +90,11 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  loginAction: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   auth: state.auth
