@@ -118,7 +118,7 @@ router.post("/login", (req, res) => {
 // @access Private
 router.get(
   "/current",
-  passport.authenticate("jwt", { success: true }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
       success: true,
@@ -131,4 +131,28 @@ router.get(
   }
 );
 
+router.get(
+  "/byid/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    User.findById(req.params.id).then(user => {
+      if (!user) {
+        errors.user = "User not found";
+        res.status(404).json(errors);
+      }
+      res.json(user);
+    });
+  }
+);
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.find().then(users => {
+      res.json(users);
+    });
+  }
+);
 module.exports = router;
