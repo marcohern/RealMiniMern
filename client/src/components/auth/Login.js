@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 import classnames from "classnames";
+import { connect } from "react-redux";
+import { loginAction } from "../../actions/authActions";
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -27,10 +29,13 @@ export default class Login extends Component {
       password: this.state.password
     };
 
+    this.props.loginAction(loginData);
+
+    /*
     axios
       .post("/api/users/login", loginData)
       .then(res => console.log(res.data))
-      .catch(err => (this.state.errors = err.response.data));
+      .catch(err => (this.state.errors = err.response.data));*/
     console.log(loginData);
   }
 
@@ -84,3 +89,11 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+export default connect(
+  mapStateToProps,
+  { loginAction }
+)(Login);
