@@ -100,7 +100,14 @@ router.get(
   "/current",
   passport.authenticate("jwt", { success: true }),
   (req, res) => {
-    res.json(req.user);
+    res.json({
+      success: true,
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      desc: req.user.desc,
+      avatar: req.user.avatar
+    });
   }
 );
 
