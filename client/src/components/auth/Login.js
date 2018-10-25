@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
 import classnames from "classnames";
 import { connect } from "react-redux";
 import { loginAction } from "../../actions/authActions";
 import { PropTypes } from "prop-types";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
   constructor() {
@@ -19,6 +19,12 @@ class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -30,18 +36,14 @@ class Login extends Component {
       password: this.state.password
     };
 
-    this.props.loginAction(loginData);
+    this.props.loginAction(loginData, this.props.history);
 
-    /*
-    axios
-      .post("/api/users/login", loginData)
-      .then(res => console.log(res.data))
-      .catch(err => (this.state.errors = err.response.data));*/
     console.log(loginData);
   }
 
   render() {
-    const errors = this.state.errors;
+    const { user } = this.props.auth;
+    const { errors } = this.state;
     return (
       <div className="login">
         <div className="container">
@@ -49,7 +51,7 @@ class Login extends Component {
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Log In</h1>
               <p className="lead text-center">
-                Sign in to your MiniMERN account
+                Sign in to your MiniMERN account {user ? user.name : null}
               </p>
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
@@ -93,13 +95,15 @@ class Login extends Component {
 
 Login.propTypes = {
   loginAction: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 export default connect(
   mapStateToProps,
   { loginAction }
-)(Login);
+)(withRouter(Login));
